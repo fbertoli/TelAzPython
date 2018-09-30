@@ -1,0 +1,8 @@
+OBBLIGATORI
+giorno	7:00	15:00
+sera	15:00	23:00	numero_operatori = 1
+notte	23:00	7:00	numero_operatori = 1
+
+INTERMEDI
+intermedio1	11:00	19:00 	escluso = sabato, domenica
+intermedio2	12:00	20:00 	escluso = sabato, domenica

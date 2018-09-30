@@ -1,0 +1,28 @@
+Silvia S
+turni per settimana = 3
+giorni non disponibile = 8/4/18, 14/8/18, 16/8/18
+
+Pippo P
+turni per settimana = 5
+turni specifici = giorno - lunedi, sera - lunedi, notte - lunedi, intermedio - mercoledi, giorno - giovedi, giorno - venerdi
+
+Mario M
+turni per settimana = 5
+
+Andrea A 
+turni per settimana = 3
+
+Mister CCNL
+ccnl
+turni per settimana = 5
+turni non disponibile = giorno - 7/4/18, sera - 6/4/18
+
+Federico F
+turni per settiana = 3
+
+Giulia G
+turni per settimana = 5
+
+Franco F
+turni per settimana = 5
+

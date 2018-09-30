@@ -1,0 +1,10 @@
+!!!! IMPORTANTE: non modificare la parte a sinistra dell' = ma solo la parte a destra
+
+giorno iniziale = 2/4/18
+giorno finale = 8/4/18
+
+minimo ore tra due turni = 11
+
+file turni = input/turni.txt
+file festivita = input/feste.txt
+file operatori = input/operatori.txt

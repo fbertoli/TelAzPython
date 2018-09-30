@@ -1,0 +1,42 @@
+turni.txt
+OBBLIGATORI
+<nome> <ora_inizio> <ora_fine> [minimo_operatori] [massimo_operatori] [numero_operatori]
+
+INTERMEDI
+<nome> <ora_inizio> <ora_fine> [giorni] [escluso] [numero_operatori] [massimo_operatori]
+
+NOTA !!
+Per indicare la fine di un giorno usare 24:00 (o, alternativamente, 23:59), per indicare l'inizio usare 00:00 (alternativamente, 00:01).
+
+LEGENDA
+[] indica un campo facoltativo. Per definirlo scrivere il nome del campo, poi =, e poi il valore\i desiderato. 
+Esempio: 
+	- se per il turno "notte" voglio che ci sia un solo operatore, scrivo numero_operatori = 1. 
+	- se voglio che turno "intermedio" non ci sia il sabato e la domenica, scrivo escluso = sabato, domenica
+
+
+<> indica un campo da sosituire. Per esempio, in turni.txt <nome> viene sotituito con "giorno", "sera" etc...
+
+
+
+-------------------------------------------------------------------------------------------------------------
+operatori.txt
+per ogni operatore insierire
+<nome> 
+[ccnl]
+turni per settimana = <turni>
+[giorni non disponibile]
+[turni non disponibile]
+[turni specifici]
+
+NOTE !!
+Se un operatore ha contratto ccnl, dopo il nome, in una nuova riga, scrivere solo ccnl.
+Per definire i giorni non disponibili per un operatore, scrivere "giorni non disponibile = " e una lista di giorni in formato "dd/mm/yy" separati da una virgola.
+
+Per definire i turni non disponibili per un operatore, scrivere "turni non disponibile = " e una lista di turni in formato "nome_turno - dd/mm/yy" separati da una virgola.
+
+Per definire dei turni specifici (da fare) per un operatore, scrivere "turni specifici = " e una lista di turni nel formato "nome_turno - giorno_settimana".
+Se vengono definiti dei turni specifici, l'operatore potrà lavorare esclusivamente in questi turni.
+
+!! Non lasciare line vuote tra i campi di un operatore, ma lasciare almeno una linea vuota tra due operatori.
+
