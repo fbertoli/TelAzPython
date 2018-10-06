@@ -4,7 +4,7 @@ giorni non disponibile = 8/4/18, 14/8/18, 16/8/18
 
 Pippo P
 turni per settimana = 5
-turni specifici = giorno - lunedi, sera - lunedi, notte - lunedi, intermedio - mercoledi, giorno - giovedi, giorno - venerdi
+turni specifici = giorno - lunedi, sera - lunedi, notte - lunedi, intermedio1 - mercoledi, giorno - giovedi, giorno - venerdi
 
 Mario M
 turni per settimana = 5

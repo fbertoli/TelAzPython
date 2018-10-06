@@ -8,8 +8,8 @@ Employee = collections.namedtuple('Employee', ['name', 'ccnl_contract', 'shifts_
 # 		self.name = ""
 # 		self.shifts_week = 0
 # 		self.ccnl_contract = False
-# 		# days_unavailable = list() ## i: bool
-# 		self.unavailable = dict() ## shift object: bool
+# 		# days_unavailable = list() # -- i: bool
+# 		self.unavailable = dict() # -- shift object: bool
 
 
 def employee_to_str(employee):
@@ -18,13 +18,13 @@ def employee_to_str(employee):
         string += " [ccnl]"
     string += " - shifts per week = {}".format(employee.shifts_week)
 
-    ## print unavailibility
+    # -- print unavailibilities
     unavailibilities = list()
     for k, v in employee.unavailable.items():
         if v:
             unavailibilities.append("{0} - {1}".format(k.name, k.day))
 
-    ## paste strings
+    # -- paste strings
     if unavailibilities:
         string += "\nUnavailable on: " + ", ".join(unavailibilities)
     return string

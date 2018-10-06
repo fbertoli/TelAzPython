@@ -21,8 +21,8 @@ def main():
     # data_test = True
     # shift_test = True
     # shift_select_test = True
-    shift_adjacent_test = True
-    # employee__test = True
+    # shift_adjacent_test = True
+    employee__test = True
 
 
     # -- testing parameters.py

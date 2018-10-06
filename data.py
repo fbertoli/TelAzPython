@@ -28,7 +28,7 @@ class Data:
         self.read_holidays()
         self.shifts.read_file(len(self.holidays), self.holidays)
         self.shifts.create_shift_adjacency_matrix()
-        # self.read_employees()
+        self.read_employees()
 
     def read_holidays(self):
         with open(parameters.file_festivita, 'r') as source:
@@ -55,29 +55,30 @@ class Data:
             if lines[i].strip():
                 name = lines[i].rstrip().lstrip()
                 i += 1
-                ## ccnl contract
+                
+                # -- ccnl contract
                 ccnl_contract = False
                 if "ccnl" in lines[i]:
                     ccnl_contract = True
                     i += 1
 
-                # identify shifts per week
+                # -- identify shifts per week
                 if "turni per settimana" not in lines[i]:
                     if utilities.similar_string("turni per settimana", lines[i].split('=')[0]) < .6:
                         sys.exit(
-                            "Errore in file operatori. Per operatore {} manca riga per definire turni per settimana".format(
+                            "Errore in file operatori. Per operatore {0} manca riga per definire turni per settimana".format(
                                 employee.name))
                     else:
                         print("Warning!! Possibili errori di battiture in riga {0}: {1}".format(i, lines[i]))
                 shifts_week = int(lines[i].rstrip().split('=')[-1])
                 i += 1
 
-                ## create Employee
+                # -- create Employee
                 employee = employeeModule.Employee(name, ccnl_contract, shifts_week,
                                                    {shift: False for shift in self.shifts})
                 self.employees.append(employee)
 
-                ## identify optional lines
+                # -- identify optional lines
                 while lines[i].strip():
                     try:
                         keyword, value = lines[i].rstrip().split('=')
@@ -86,53 +87,49 @@ class Data:
 
                     if "giorni non disponibile" == keyword.rstrip().lstrip():
                         for v in value.split(','):
-                            ## safety check
+                            # -- safety check
                             utilities.safety_check(v.count('/') == 2,
                                                   "Data nel formato sbagliato in riga \"giorni non disponibile\" per operatore %s" % employee.name)
 
-                            ## get date and transform it in day number
+                            # -- get date and transform it in day number
                             day, month, year = v.split('/')
                             delta = date(utilities.format_year(year), int(month), int(day)) - self.start_date
 
-                            ## if day is in range considered, update employee.unuavailable
-                            if delta.days >= 0 and delta.days < self.days:
+                            # -- if day is in range considered, update employee.unuavailable
+                            if 0 <= delta.days < self.days:
                                 for shift in self.shifts.select(day=delta.days):
                                     employee.unavailable[shift] = True
 
-
                     elif "turni non disponibile" == keyword.rstrip().lstrip():
                         for v in value.split(','):
-                            ## safety check
-                            utilities.safety_check(v.count('-') == 1,
-                                                  "Formato sbagliato in riga \"turni non disponibile\" per operatore %s" % employee.name)
+                            # -- safety check
+                            utilities.safety_check(v.count('-') == 1, "Formato sbagliato in riga \"turni non disponibile\" per operatore %s" % employee.name)
                             shift_name, shift_day = v.split('-')
 
-                            ## safety check
-                            utilities.safety_check(shift_day.count('/') == 2,
-                                                  "Data nel formato sbagliato in riga \"turni non disponibile\" per operatore %s" % employee.name)
+                            # -- safety check
+                            utilities.safety_check(shift_day.count('/') == 2, "Data nel formato sbagliato in riga \"turni non disponibile\" per operatore %s" % employee.name)
 
-                            ## get date and transform it in day number
+                            # -- get date and transform it in day number
                             day, month, year = shift_day.split('/')
                             delta = date(utilities.format_year(year), int(month), int(day)) - self.start_date
 
-                            ## if day is in range considered, update employee.unuavailable
-                            if delta.days >= 0 and delta.days < self.days:
+                            # -- if day is in range considered, update employee.unuavailable
+                            if 0 <= delta.days < self.days:
                                 self.employees[-1].unavailable[
                                     self.shifts.get_shift[shift_name.lstrip().rstrip(), delta.days]] = True
 
-
-                    elif "turni specifici" == keyword.rstrip().lstrip():
-                        ## re-set unavailable
+                    elif 'turni specifici' == keyword.rstrip().lstrip():
+                        # -- re-set unavailable
                         for k in self.employees[-1].unavailable.keys():
                             self.employees[-1].unavailable[k] = True
 
                         for v in value.split(','):
-                            ## safety check
+                            # -- safety check
                             utilities.safety_check(v.count('-') == 1,
                                                   "Formato sbagliato in riga \"turni specifici\" per operatore %s" % employee.name)
                             shift_name, weekday = v.split('-')
 
-                            ## update all associate shifts
+                            # -- update all associate shifts
                             for day in range(utilities.days_map[weekday.strip()[:3]], self.days, 7):
                                 if not self.holidays[day]:
                                     self.employees[-1].unavailable[
