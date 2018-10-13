@@ -1,7 +1,8 @@
 import collections
 
 Employee = collections.namedtuple('Employee', ['name', 'ccnl_contract', 'shifts_week', 'unavailable'])
-
+# shifts_week:  is number of shift emplyee has to work on a given week
+# unavailable: dict() shift -> bool
 
 # class Employee:
 # 	def __init__(self):

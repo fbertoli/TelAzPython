@@ -15,6 +15,7 @@ class Data:
     employees = list()
     shifts = shiftsModule.Shifts()
     days_map = dict()  # (only for printing) i: date object, date object: i
+    employee_shift_per_week = dict() # employee, week -> int (number of shifts to do in that week)
 
     def __init__(self):
         self.start_date = parameters.start_date
@@ -29,6 +30,7 @@ class Data:
         self.shifts.read_file(len(self.holidays), self.holidays)
         self.shifts.create_shift_adjacency_matrix()
         self.read_employees()
+        self.compute_number_of_shifts_per_week()
 
     def read_holidays(self):
         with open(parameters.file_festivita, 'r') as source:
@@ -144,6 +146,12 @@ class Data:
 
                     i += 1
             i += 1
+
+    def compute_number_of_shifts_per_week(self):
+        # TODO pre-process the number of shifts per week per employee
+        for employee in self.employees:
+            for w in range(0, self.days / 7):
+                self.employee_shift_per_week[employee, w] = employee.shifts_week
 
     # except Exception as e:
     # 	print("Errore in file", parameters.file_operatori)

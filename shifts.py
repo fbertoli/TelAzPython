@@ -17,7 +17,7 @@ class Shifts(list):
     get_shift = dict()  # name,day: shift defined by name and day
 
     # -- dict containing info for all shifts
-    info = dict()  # name?shift: dict() -> start: sting, end: sting, mandatory: bool, min_operators: int, number_operators: int, on_days (only for intermediates): list
+    info = dict()  # name shift: dict() -> start: sting, end: sting, mandatory: bool, min_operators: int, number_operators: int, on_days (only for intermediates): list
 
     # -- matrix identifying adjacent turns
     adjacency_matrix = dict()  # (shift_1, sfhit_2): True iff whenever shift_1 implies shift_2 cannot be taken on the next day
