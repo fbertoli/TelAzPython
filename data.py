@@ -15,7 +15,6 @@ class Data:
     employees = list()
     shifts = shiftsModule.Shifts()
     days_map = dict()  # (only for printing) i: date object, date object: i
-    employee_shift_per_week = dict() # employee, week -> int (number of shifts to do in that week)
 
     def __init__(self):
         self.start_date = parameters.start_date
@@ -71,13 +70,13 @@ class Data:
                             "Errore in file operatori. Per operatore {0} manca riga per definire turni per settimana".format(
                                 employee.name))
                     else:
-                        print("Warning!! Possibili errori di battiture in riga {0}: {1}".format(i, lines[i]))
-                shifts_week = int(lines[i].rstrip().split('=')[-1])
+                        print("Warning!! Possibili errori di battiture in file operatori, riga {0}: {1}".format(i, lines[i]))
+                shifts_per_week = int(lines[i].rstrip().split('=')[-1])
                 i += 1
 
                 # -- create Employee
-                employee = employeeModule.Employee(name, ccnl_contract, shifts_week,
-                                                   {shift: False for shift in self.shifts})
+                employee = employeeModule.Employee(name, ccnl_contract, {w: shifts_per_week for w in range(self.weeks)},
+                                                   {shift: False for shift in self.shifts}, len(self.employees))
                 self.employees.append(employee)
 
                 # -- identify optional lines
@@ -130,12 +129,14 @@ class Data:
                             utilities.safety_check(v.count('-') == 1,
                                                   "Formato sbagliato in riga \"turni specifici\" per operatore %s" % employee.name)
                             shift_name, weekday = v.split('-')
+                            shift_name = shift_name.strip()
+                            weekday_short = weekday.strip()[:3]
 
                             # -- update all associate shifts
-                            for day in range(utilities.days_map[weekday.strip()[:3]], self.days, 7):
+                            for day in range(utilities.days_map[weekday_short], self.days, 7):
                                 if not self.holidays[day]:
                                     self.employees[-1].unavailable[
-                                        self.shifts.get_shift[shift_name.lstrip().rstrip(), day]] = False
+                                        self.shifts.get_shift[shift_name, day]] = False
                     else:
                         keywords = ["turni specifici", "turni non disponibile", "giorni non disponibile"]
                         best_option = keywords[
@@ -148,10 +149,11 @@ class Data:
             i += 1
 
     def compute_number_of_shifts_per_week(self):
+        return
         # TODO pre-process the number of shifts per week per employee
-        for employee in self.employees:
-            for w in range(0, self.days / 7):
-                self.employee_shift_per_week[employee, w] = employee.shifts_week
+        # for employee in self.employees:
+        #     for w in range(0, self.weeks):
+        #        employee.shifts_week =
 
     # except Exception as e:
     # 	print("Errore in file", parameters.file_operatori)

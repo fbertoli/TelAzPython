@@ -6,6 +6,7 @@ import employee as employeeModule
 import parameters
 import data as dataModule
 from datetime import date, timedelta
+import solver as solverModule
 
 
 def main():
@@ -16,14 +17,15 @@ def main():
     shift_select_test = False
     shift_adjacent_test = False
     employee__test = False
+    solver_test = False
 
     # parameters_test = True
     # data_test = True
     # shift_test = True
     # shift_select_test = True
     # shift_adjacent_test = True
-    employee__test = True
-
+    # employee__test = True
+    solver_test = True
 
     # -- testing parameters.py
     parameters.read_config()
@@ -92,11 +94,21 @@ def main():
     if employee__test:
         print "TEST Employees"
         for employee in data.employees:
-            print employeeModule.employee_to_str(employee)
+            print employee
             print
+        print "--------------------------------------------------\n"
+        return
+
+
+    solver = solverModule.Solver(data)
+    if solver_test:
+        print "TEST Solver Creation"
+        solver.solve()
+        # solver.print_solution()
         print "--------------------------------------------------\n"
         return
 
 
 if __name__ == "__main__":
     main()
+

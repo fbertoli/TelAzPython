@@ -7,7 +7,22 @@ import collections
 ''' 
 An object is a list of namedtuple (shift).
 '''
-Shift = collections.namedtuple('Shift', ['name', 'mandatory', 'day', 'week'])
+ShiftTuple = collections.namedtuple('Shift', ['name', 'mandatory', 'day', 'week'])
+
+
+class Shift(ShiftTuple):
+    def __hash__(self):
+        return hash(self.name) * hash(self.day) * hash(self.week) * hash(self.mandatory)
+
+    def __str__(self):
+        return "{0}: {1}d: {2}, w: {3}".format(self.name, "(M) " if self.mandatory else " ", self.day, self.week)
+
+    # 	def __eq__(self, other):
+    # 		return (self.day == other.day) and (self.name == other.name) and (self.mandatory == other.mandatory)
+
+    # 	def __ne__(self, other):
+    # 		return not self.__eq__(other)
+
 
 
 class Shifts(list):

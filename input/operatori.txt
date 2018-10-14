@@ -3,8 +3,8 @@ turni per settimana = 3
 giorni non disponibile = 8/4/18, 14/8/18, 16/8/18
 
 Pippo P
-turni per settimana = 5
-turni specifici = giorno - lunedi, sera - lunedi, notte - lunedi, intermedio1 - mercoledi, giorno - giovedi, giorno - venerdi
+turni per settimana = 3
+turni specifici = giorno - lunedi, sera - lunedi, notte - lunedi, intermedio1 - mercoledi, giorno - giovedi, giorno - venerdi, giorno - sabato, giorno - domenica
 
 Mario M
 turni per settimana = 5
@@ -18,11 +18,17 @@ turni per settimana = 5
 turni non disponibile = giorno - 7/4/18, sera - 6/4/18
 
 Federico F
-turni per settiana = 3
+turni per settimana = 3
 
 Giulia G
 turni per settimana = 5
 
 Franco F
+turni per settimana = 5
+
+Simone S
+turni per settimana = 5
+
+Francesco F
 turni per settimana = 5
 

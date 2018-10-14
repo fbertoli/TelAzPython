@@ -4,10 +4,7 @@ import sys
 from datetime import date
 import utilities
 
-# -- GLOBAL VARIABLEs
-# -- minimum of hours between two shifts
-min_rest_hours = 0
-
+# -- GLOBAL VARIABLES
 # -- files di input
 file_turni = ""
 file_festivita = ""
@@ -17,15 +14,17 @@ file_operatori = ""
 start_date = None
 end_date = None
 
-# -- globals
+# -- parameters for rules
 max_operators = 100
-
+shifts_max_week = dict()    # shift name -> max shifts of this type per week
+min_rest_hours = 0          # minimum of hours between two shifts
+max_we_consecutive = 1      # max weekend in a row an employee can work
 
 # -- parse the config file
 def read_config(file_config="input/config.txt"):
     global start_date, end_date
     global file_turni, file_festivita, file_operatori
-    global min_rest_hours
+    global min_rest_hours, shifts_max_week, max_we_consecutive
 
     # -- sanity check
     if not os.path.isfile(file_config):
@@ -78,6 +77,14 @@ def read_config(file_config="input/config.txt"):
                 end_date = date(utilities.format_year(year), int(month), int(day))
                 if end_date.weekday() != 6:
                     warnings.append("Il giorno finale non è una Domenica.")
+
+        elif "weekend di fila consentiti" in line:
+            try:
+                max_we_consecutive = int(line.split("=")[-1])
+            except ValueError:
+                warnings.append("weekend di fila consentiti non è un numero intero.")
+
+        # TODO: read shifts_max_week
 
     # -- print warnings
     if warnings:

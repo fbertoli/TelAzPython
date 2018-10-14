@@ -1,9 +1,10 @@
 !!!! IMPORTANTE: non modificare la parte a sinistra dell' = ma solo la parte a destra
 
 giorno iniziale = 2/4/18
-giorno finale = 8/4/18
+giorno finale = 15/4/18
 
 minimo ore tra due turni = 11
+weekend di fila consentiti = 2
 
 file turni = input/turni.txt
 file festivita = input/feste.txt
