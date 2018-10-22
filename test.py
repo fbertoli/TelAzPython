@@ -24,8 +24,8 @@ def main():
     # shift_test = True
     # shift_select_test = True
     # shift_adjacent_test = True
-    # employee__test = True
-    solver_test = True
+    employee__test = True
+    # solver_test = True
 
     # -- testing parameters.py
     parameters.read_config()
@@ -49,7 +49,7 @@ def main():
         print "data.weeks = ", data.weeks
         print "holidays"
         for i in range(data.days):
-            if data.holidays[i]:
+            if data.is_holiday[i]:
                 print "  -", i, timedelta(i) + data.start_date
         print "--------------------------------------------------\n"
         return

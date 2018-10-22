@@ -11,10 +11,14 @@ class Data:
     end_date = None  # date object (Must be a sunday)
     days = 0
     weeks = 0
-    holidays = list()  # [i] = whether day start_date + i is holiday
+    is_holiday = list()  # [i] = whether day start_date + i is holiday
     employees = list()
     shifts = shiftsModule.Shifts()
     days_map = dict()  # (only for printing) i: date object, date object: i
+
+    # -- utilities
+    def is_on_weekend(self,day):
+        return day % 7 in {5,6}
 
     def __init__(self):
         self.start_date = parameters.start_date
@@ -24,9 +28,9 @@ class Data:
             self.days_map[i] = self.start_date + timedelta(i)
             self.days_map[self.start_date + timedelta(i)] = i
         self.weeks = int(self.days / 7)
-        self.holidays = [False for i in range(self.days)]  # i: whether day start_date + i is holiday
+        self.is_holiday = [False for i in range(self.days)]  # i: whether day start_date + i is holiday
         self.read_holidays()
-        self.shifts.read_file(len(self.holidays), self.holidays)
+        self.shifts.read_file(len(self.is_holiday), self.is_holiday)
         self.shifts.create_shift_adjacency_matrix()
         self.read_employees()
         self.compute_number_of_shifts_per_week()
@@ -43,7 +47,7 @@ class Data:
             # -- make sure format is correct
             delta = date(utilities.format_year(year), month, day) - self.start_date
             if 0 <= delta.days < self.days:
-                self.holidays[delta.days] = True
+                self.is_holiday[delta.days] = True
 
     def read_employees(self):
         # -- read file
@@ -76,7 +80,9 @@ class Data:
 
                 # -- create Employee
                 employee = employeeModule.Employee(name, ccnl_contract, {w: shifts_per_week for w in range(self.weeks)},
-                                                   {shift: False for shift in self.shifts}, len(self.employees))
+                                                   {shift: False for shift in self.shifts},
+                                                   [False for d in range(self.days)],
+                                                   len(self.employees))
                 self.employees.append(employee)
 
                 # -- identify optional lines
@@ -134,7 +140,7 @@ class Data:
 
                             # -- update all associate shifts
                             for day in range(utilities.days_map[weekday_short], self.days, 7):
-                                if not self.holidays[day]:
+                                if not self.is_holiday[day]:
                                     self.employees[-1].unavailable[
                                         self.shifts.get_shift[shift_name, day]] = False
                     else:

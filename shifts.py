@@ -7,29 +7,33 @@ import collections
 ''' 
 An object is a list of namedtuple (shift).
 '''
-ShiftTuple = collections.namedtuple('Shift', ['name', 'mandatory', 'day', 'week'])
+ShiftTuple = collections.namedtuple('Shift', ['name', 'mandatory', 'day', 'week', 'id'])
+# id: identifier. Equals position in shifts
 
 
 class Shift(ShiftTuple):
     def __hash__(self):
-        return hash(self.name) * hash(self.day) * hash(self.week) * hash(self.mandatory)
+        return self.id
 
     def __str__(self):
-        return "{0}: {1}d: {2}, w: {3}".format(self.name, "(M) " if self.mandatory else " ", self.day, self.week)
+        return "{0}: {1}d: {2}, w: {3}, id: {4}".format(self.name, "(M) " if self.mandatory else " ", self.day, self.week, self.id)
 
-    # 	def __eq__(self, other):
-    # 		return (self.day == other.day) and (self.name == other.name) and (self.mandatory == other.mandatory)
+    def __eq__(self, other):
+    	return self.id == other.id
 
-    # 	def __ne__(self, other):
-    # 		return not self.__eq__(other)
-
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 
 class Shifts(list):
+    """ A wrapper class to a list of shifts. Note, a shift id is its position in the list. """
     # -- list with names of shift
     mandatory = list()
     intermediate = list()
     get_shift = dict()  # name,day: shift defined by name and day
+
+    # -- dummy shift representing no shift
+    dummy = Shift('dummy', False, -1, -1, -1)
 
     # -- dict containing info for all shifts
     info = dict()  # name shift: dict() -> start: sting, end: sting, mandatory: bool, min_operators: int, number_operators: int, on_days (only for intermediates): list
@@ -100,12 +104,16 @@ class Shifts(list):
         # -- populate self.shifts
         for i in range(days):
             if not holidays[i]:
-                self += [Shift(item, True, i, int(i / 7)) for item in self.mandatory]
-                self += [Shift(item, False, i, int(i / 7)) for item in self.intermediate if (i % 7) in self.info[item]["on_days"]]
+                for item in self.mandatory:
+                    self .append(Shift(item, True, i, int(i / 7), len(self)))
+                for item in self.intermediate:
+                    if (i % 7) in self.info[item]["on_days"]:
+                        self.append(Shift(item, False, i, int(i / 7), len(self)))
 
         # -- populate get_shift
         for s in self:
             self.get_shift[s.name, s.day] = s
+
 
     def create_shift_adjacency_matrix(self):
         for s_1, s_2 in itertools.product(self.info.keys(), self.info.keys()):  # use keys() isntead of items() for compatibility with python 2

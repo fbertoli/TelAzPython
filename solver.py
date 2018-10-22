@@ -75,7 +75,7 @@ class Solver:
                 shifts = self.data.shifts.select(name='*', mandatory='*', day=d,week='*')
                 for e in self.data.employees:
                     shifts_e = [s for s in shifts if not e.unavailable[s]]
-                    if shifts_e and e.id in [0,2]:
+                    if shifts_e and e.id in [0]:
                         self.solver.Add(sum(self.x_var[e][s] for s in shifts_e) < 2)
                         print d, e.name, ", ".join(map(lambda x: getattr(x, 'name'), shifts_e))
 
